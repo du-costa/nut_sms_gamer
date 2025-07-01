@@ -1,4 +1,4 @@
-/* Atualizado para o protocolo do nobreak SMS Gamer */
+/* Atualizado para o protocolo real do nobreak SMS Gamer */
 
 #include <stdint.h>
 #include <string.h>
@@ -34,7 +34,7 @@ uint8_t sms_prepare_test_battery_nsec(uint8_t *buffer, uint16_t delay) {
 }
 
 uint8_t sms_prepare_shutdown_nsec(uint8_t *buffer, uint16_t delay) {
-    buffer[0] = 0x52; // 'R' (shutdown + restore)
+    buffer[0] = 0x52; // 'R'
     buffer[1] = (delay >> 8) & 0xFF;
     buffer[2] = delay & 0xFF;
     buffer[3] = 0x27;
@@ -45,11 +45,33 @@ uint8_t sms_prepare_shutdown_nsec(uint8_t *buffer, uint16_t delay) {
 }
 
 // Comandos padronizados
-PREP_CMD(get_status,  0x51, 0xFF, 0xFF, 0xFF, 0xFF) // 'Q'
-PREP_CMD(get_information, 0x49, 0xFF, 0xFF, 0xFF, 0xFF) // 'I'
-PREP_CMD(get_features,   0x46, 0xFF, 0xFF, 0xFF, 0xFF) // 'F'
-PREP_CMD(set_beep,       0x4D, 0xFF, 0xFF, 0xFF, 0xFF) // 'M'
-PREP_CMD(cancel_test,    0x43, 0xFF, 0xFF, 0xFF, 0xFF) // 'C'
-PREP_CMD(cancel_shutdown,0x43, 0xFF, 0xFF, 0xFF, 0xFF) // 'C' (mesmo do cancel_test)
-PREP_CMD(test_battery_low,0x54, 0x00, 0x10, 0x00, 0x00) // T com 16s fixos
-PREP_CMD(shutdown_restore,0x52, 0x00, 0xC8, 0x27, 0x0F) // 10s padrão
+PREP_CMD(get_status,        0x51, 0xFF, 0xFF, 0xFF, 0xFF) // 'Q'
+PREP_CMD(get_information,   0x49, 0xFF, 0xFF, 0xFF, 0xFF) // 'I'
+PREP_CMD(get_features,      0x46, 0xFF, 0xFF, 0xFF, 0xFF) // 'F'
+PREP_CMD(set_beep,          0x4D, 0xFF, 0xFF, 0xFF, 0xFF) // 'M'
+PREP_CMD(cancel_test,       0x43, 0xFF, 0xFF, 0xFF, 0xFF) // 'C'
+PREP_CMD(cancel_shutdown,   0x43, 0xFF, 0xFF, 0xFF, 0xFF) // 'C' (mesmo comando)
+PREP_CMD(test_battery_low,  0x54, 0x00, 0x10, 0x00, 0x00) // 16s
+PREP_CMD(shutdown_restore,  0x52, 0x00, 0xC8, 0x27, 0x0F) // padrão
+
+void sms_parse_results(uint8_t *rawvalues, SmsData *results) {
+    if (!rawvalues || rawvalues[0] != 0x51) return; // comando 'Q'
+
+    results->lastinputVac = (float)((rawvalues[1] << 24) | (rawvalues[2] << 16) | (rawvalues[3] << 8) | rawvalues[4]) / 10.0f;
+    results->inputVac     = (float)((rawvalues[5] << 8) | rawvalues[6]) / 10.0f;
+    results->outputVac    = (float)((rawvalues[7] << 8) | rawvalues[8]) / 10.0f;
+    results->outputpower  = (float)((rawvalues[9] << 8) | rawvalues[10]) / 10.0f;
+    results->outputHz     = (float)((rawvalues[11] << 8) | rawvalues[12]) / 10.0f;
+    results->batterylevel = (float)((rawvalues[13] << 8) | rawvalues[14]) / 10.0f;
+    results->temperatureC = (float)((rawvalues[15] << 8) | rawvalues[16]) / 10.0f;
+
+    uint8_t flags = rawvalues[17];
+    results->onbattery     = (flags & (1 << 7)) != 0;
+    results->lowbattery    = (flags & (1 << 6)) != 0;
+    results->bypass        = (flags & (1 << 5)) != 0;
+    results->boost         = (flags & (1 << 4)) != 0;
+    results->upsok         = (flags & (1 << 3)) != 0;
+    results->test          = (flags & (1 << 2)) != 0;
+    results->shutdown      = (flags & (1 << 1)) != 0;
+    results->beepon        = (flags & (1 << 0)) != 0;
+}
