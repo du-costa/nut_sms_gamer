@@ -41,6 +41,8 @@
 # separated by a single TAB character. An empty field value is thus just
 # two double-quotes surreounded by TABs.
 
+"SMS"	"ups"	"1"	"Gamer 2000Bi-Bi"	"serial"	"nutdrv_qx subdriver=sms_gamer"	# driver customizado baseado em protocolo binário real
+
 "2E"	"ups"	"2"	"PS1000L"	"USB"	"nutdrv_qx"	# https://github.com/networkupstools/nut-ddl/issues/41
 "2E"	"ups"	"2"	"PS1000L"	"serial"	"nutdrv_qx"	# https://github.com/networkupstools/nut-ddl/issues/41
 
