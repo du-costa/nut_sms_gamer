@@ -77,3 +77,7 @@ void sms_parse_results(uint8_t *rawvalues, SmsData *results) {
     results->shutdown      = (flags & (1 << 1)) != 0;
     results->beepon        = (flags & (1 << 0)) != 0;
 }
+void upsdrv_cleanup(void) {
+    upsdebugx(LOG_DEBUG, "upsdrv_cleanup");
+    ser_close(upsfd, device_path); // ou apenas return; se não usar porta serial diretamente
+}
