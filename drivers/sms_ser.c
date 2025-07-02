@@ -3,6 +3,9 @@
 #include <stdint.h>
 #include <string.h>
 #include "sms_ser.h"
+#include "serial.h"
+#include "common.h"
+#include "main.h"
 
 #define ENDCHAR '\r'
 
@@ -76,8 +79,17 @@ void sms_parse_results(uint8_t *rawvalues, SmsData *results) {
     results->test          = (flags & (1 << 2)) != 0;
     results->shutdown      = (flags & (1 << 1)) != 0;
     results->beepon        = (flags & (1 << 0)) != 0;
-}
+} 
+extern int upsfd;
+extern char device_path[];
+
 void upsdrv_cleanup(void) {
-    upsdebugx(LOG_DEBUG, "upsdrv_cleanup");
-    ser_close(upsfd, device_path); // ou apenas return; se não usar porta serial diretamente
+    if (upsfd >= 0) {
+        ser_close(upsfd, device_path);
+        upsdebugx(LOG_DEBUG, "upsdrv_cleanup: porta serial fechada");
+    } else {
+        upsdebugx(LOG_DEBUG, "upsdrv_cleanup: upsfd inválido");
+    }
 }
+void upsdrv_help(void) {}
+void upsdrv_makevartable(void) {}
