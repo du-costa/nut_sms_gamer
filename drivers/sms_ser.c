@@ -79,9 +79,7 @@ void sms_parse_results(uint8_t *rawvalues, SmsData *results) {
     results->test          = (flags & (1 << 2)) != 0;
     results->shutdown      = (flags & (1 << 1)) != 0;
     results->beepon        = (flags & (1 << 0)) != 0;
-} 
-extern int upsfd;
-extern char device_path[];
+}
 
 void upsdrv_cleanup(void) {
     if (upsfd >= 0) {
