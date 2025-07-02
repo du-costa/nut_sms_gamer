@@ -55,6 +55,8 @@ PREP_CMD(test_battery_low,  0x54, 0x00, 0x10, 0x00, 0x00) // 16s
 PREP_CMD(shutdown_restore,  0x52, 0x00, 0xC8, 0x27, 0x0F) // padrão
 
 void sms_parse_results(uint8_t *rawvalues, SmsData *results) {
+    uint8_t flags;
+
     if (!rawvalues || rawvalues[0] != 0x51) return; // comando 'Q'
 
     results->lastinputVac = (float)((rawvalues[1] << 24) | (rawvalues[2] << 16) | (rawvalues[3] << 8) | rawvalues[4]) / 10.0f;
@@ -65,7 +67,7 @@ void sms_parse_results(uint8_t *rawvalues, SmsData *results) {
     results->batterylevel = (float)((rawvalues[13] << 8) | rawvalues[14]) / 10.0f;
     results->temperatureC = (float)((rawvalues[15] << 8) | rawvalues[16]) / 10.0f;
 
-    uint8_t flags = rawvalues[17];
+    flags = rawvalues[17];
     results->onbattery     = (flags & (1 << 7)) != 0;
     results->lowbattery    = (flags & (1 << 6)) != 0;
     results->bypass        = (flags & (1 << 5)) != 0;
