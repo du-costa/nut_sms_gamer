@@ -94,3 +94,13 @@ void upsdrv_makevartable(void) {}
 void upsdrv_initups(void) {}
 void upsdrv_initinfo(void) {}
 void upsdrv_updateinfo(void) {}
+
+#include "nutdrv.h"
+
+upsdrv_info_t upsdrv_info = {
+    "SMS Gamer UPS Driver",
+    "1.0",
+    "Adaptado para protocolo real SMS Gamer por Você <seu@email>",
+    DRV_BETA,
+    NULL
+};
