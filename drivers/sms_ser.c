@@ -91,3 +91,6 @@ void upsdrv_cleanup(void) {
 }
 void upsdrv_help(void) {}
 void upsdrv_makevartable(void) {}
+void upsdrv_initups(void) {}
+void upsdrv_initinfo(void) {}
+void upsdrv_updateinfo(void) {}
