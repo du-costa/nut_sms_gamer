@@ -919,6 +919,7 @@ SRC_SERIAL_PAGES = \
 	rhino.txt		\
 	riello_ser.txt	\
 	sms_ser.txt \
+	sms_gamer.txt
 	safenet.txt	\
 	solis.txt		\
 	tripplite.txt	\
