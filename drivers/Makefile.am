@@ -214,6 +214,8 @@ riello_ser_SOURCES = riello.c riello_ser.c
 riello_ser_LDADD = $(LDADD) -lm
 sms_ser_SOURCES = sms_ser.c
 sms_ser_LDADD = $(LDADD) -lm
+sms_gamer_SOURCES = sms_gamer.c
+sms_gamer_LDADD = $(LDADD) -lm
 bicker_ser_SOURCES = bicker_ser.c
 bicker_ser_LDADD = $(LDADD) -lm
 ve_direct_SOURCES = ve-direct.c
@@ -437,7 +439,7 @@ dist_noinst_HEADERS = \
  main.h mge-hid.h mge-mib.h mge-utalk.h		\
  mge-xml.h microdowell.h microsol-apc.h microsol-common.h netvision-mib.h netxml-ups.h nut-ipmi.h oneac.h		\
  powercom.h powerpanel.h powerp-bin.h powerp-txt.h powervar_cx.h raritan-pdu-mib.h	\
- safenet.h serial.h sms_ser.h snmp-ups.h solis.h tripplite.h tripplite-hid.h 			\
+ safenet.h serial.h sms_ser.h sms_gamer.h snmp-ups.h solis.h tripplite.h tripplite-hid.h 			\
  upshandler.h usb-common.h usbhid-ups.h powercom-hid.h compaq-mib.h idowell-hid.h \
  apcsmart.h apcsmart_tabs.h apcsmart-old.h apcupsd-ups.h cyberpower-mib.h riello.h openups-hid.h \
  delta_ups-mib.h nutdrv_qx.h nutdrv_qx_bestups.h nutdrv_qx_blazer-common.h	\
