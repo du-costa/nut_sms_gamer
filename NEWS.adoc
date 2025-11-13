@@ -1770,6 +1770,11 @@ as part of https://github.com/networkupstools/nut/issues/1410 solution.
  - sms_ser, a driver for SMS Brazil UPS Protocol 1Phase, was introduced.
    NOTE: It may later become a subdriver under nutdrv_qx. [#2090]
 
+ - new `sms_gamer` driver:
+   * Adds support for SMS Gamer UPS models that report real battery voltage,
+     calculates SOC using different tables for LIFEPO4 and PB batteries, based
+     sms_ser.
+
  - usbhid-ups updates:
    * added support for `subdriver` configuration option, to select the
      USB HID subdriver for the device manually where automatic match
