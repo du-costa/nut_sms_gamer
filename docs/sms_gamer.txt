@@ -1,0 +1,148 @@
+SMS_GAMER(8)
+============
+
+NAME
+----
+
+sms_gamer - Driver for SMS Gamer UPS models with real battery voltage reporting.
+
+SYNOPSIS
+--------
+
+*sms_gamer* -h
+
+*sms_gamer* -a 'UPS_NAME' ['OPTIONS']
+
+NOTE: This man page only documents the hardware-specific features
+of the sms_gamer driver.  For information about the core driver, see
+linkman:nutupsdrv[8].
+
+SUPPORTED HARDWARE
+------------------
+
+sms_gamer supports SMS Gamer UPS models that report real battery voltage
+in the protocol, instead of calculated values. This driver was specifically
+developed for the SMS Gamer 2000VA (GAM2000BiBiW) with custom LiFePO4 8S battery,
+but should work with other SMS Gamer models using the same protocol variant.
+
+The main difference from the `sms_ser` driver is that `sms_gamer` reads the
+actual battery voltage from bytes 11-12 of the protocol response, and calculates
+State of Charge (SOC) using appropriate curves for different battery chemistries.
+
+EXTRA ARGUMENTS
+---------------
+
+This driver supports the following optional settings in the
+linkman:ups.conf[5] file:
+
+*batterytype*='type'::
+Select the battery type for State of Charge (SOC) calculation. Supported types are:
++
+- *lifepo4*: For LiFePO4 8S batteries (25.6V nominal). Uses a discharge curve
+  optimized for LiFePO4 chemistry with voltage range 24.0V-29.2V.
+- *leadacid*: For traditional lead-acid batteries (24V nominal). Uses the standard
+  lead-acid discharge curve. This is the default.
+
+*rebootdelay*='seconds'::
+Set the reboot delay in seconds. Default is 64.
+
+VARIABLES
+---------
+
+This driver reports the following variables:
+
+*battery.charge*::
+Battery charge level (0-100%), calculated using the appropriate curve based on
+`batterytype` setting.
+
+*battery.voltage*::
+Real battery voltage as reported by the UPS (not calculated).
+
+*battery.voltage.nominal*::
+Nominal battery voltage as reported by the UPS.
+
+*battery.chemistry*::
+Battery chemistry type: "LiFePO4" or "PbAc" (lead-acid).
+
+*battery.type*::
+Human-readable battery type: "LiFePO4" or "Lead-Acid".
+
+*input.voltage*::
+Input voltage (AC mains).
+
+*output.voltage*::
+Output voltage.
+
+*output.frequency*::
+Output frequency.
+
+*ups.load*::
+Load percentage (0-100%).
+
+*ups.temperature*::
+UPS internal temperature in degrees Celsius.
+
+*ups.status*::
+UPS status flags (OL, OB, LB, BOOST, BYPASS, etc.).
+
+INSTANT COMMANDS
+----------------
+
+This driver supports the following instant commands:
+
+*beeper.toggle*::
+Toggle the UPS beeper on/off.
+
+*test.battery.start*::
+Start a battery test.
+
+*shutdown.return*::
+Shut down the load and return when power is restored.
+
+*shutdown.stayoff*::
+Shut down the load and remain off.
+
+KNOWN ISSUES AND BUGS
+---------------------
+
+This driver is currently in BETA status. While it has been tested with the
+SMS Gamer 2000VA model, it has not been widely tested across different models
+or configurations.
+
+The LiFePO4 SOC calculation curve is based on typical 8S LiFePO4 battery behavior
+and may need adjustment for different battery configurations or manufacturers.
+
+INSTALLATION NOTES
+------------------
+
+When using this driver with a LiFePO4 battery, make sure to set `batterytype=lifepo4`
+in your linkman:ups.conf[5] file. Failure to do so will result in incorrect battery
+charge reporting.
+
+Always use the persistent `/dev/serial/by-id/` path for the port configuration to
+avoid issues with changing `/dev/ttyUSBx` assignments.
+
+AUTHOR
+------
+
+Based on the original `sms_ser` driver by Alex W. Baulé <alexwbaule@gmail.com>.
+
+Modified for SMS Gamer by Manus AI (2025).
+
+SEE ALSO
+--------
+
+The core driver
+~~~~~~~~~~~~~~~
+
+linkman:nutupsdrv[8]
+
+Related drivers
+~~~~~~~~~~~~~~~
+
+linkman:sms_ser[8] - Original SMS driver for standard SMS UPS models
+
+Internet resources
+~~~~~~~~~~~~~~~~~~
+
+The NUT (Network UPS Tools) home page: https://www.networkupstools.org/
