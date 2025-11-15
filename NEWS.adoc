@@ -88,6 +88,10 @@ https://github.com/networkupstools/nut/milestone/12
      referenced by this table, so now several higher speeds would be compiled
      conditionally. [issue #3163]
 
+ - new `sms_gamer` driver:
+   * Adds support for SMS Gamer UPS models that report real battery voltage...
+   * ... (resto da entrada)
+
  - `nutdrv_qx` driver updates:
    * Define an internal `QX_FLAG_MAPPING_HANDLED` to check if the subdriver
      code (mapping table) and the data found from device walk sit together
