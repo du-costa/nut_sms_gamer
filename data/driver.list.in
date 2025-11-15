@@ -1356,6 +1356,8 @@
 
 "SMS (Brazil)"	"ups"	"2"	"Manager III"	""	"blazer_ser"
 
+"sms_gamer" "" "SMS" "Gamer 2000VA" "" "sms_gamer"	
+
 "SNR"	"ups"	"2"	"SNR-UPS-LID-600"	""	"nutdrv_qx"
 "SNR"	"ups"	"2"	"SNR-UPS-LID-600-XPS"	""	"nutdrv_qx"
 "SNR"	"ups"	"2"	"SNR-UPS-LID-600-LED-C13"	""	"nutdrv_qx"
