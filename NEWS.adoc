@@ -89,8 +89,7 @@ https://github.com/networkupstools/nut/milestone/12
      conditionally. [issue #3163]
 
  - new `sms_gamer` driver:
-   * Adds support for SMS Gamer UPS models that report real battery voltage...
-   * ... (resto da entrada)
+   * Adds support for SMS Gamer UPS models that report real battery voltage.
 
  - `nutdrv_qx` driver updates:
    * Define an internal `QX_FLAG_MAPPING_HANDLED` to check if the subdriver
